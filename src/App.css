@@ -1,3 +1,17 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+}
+
+.link {
+  display: inline-block;
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 500;
+  font-size: 20px;
+  color: #000;
+}
+
+.activeLink {
+  composes: link;
+  color: rgb(236, 8, 8);
 }
