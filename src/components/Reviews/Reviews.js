@@ -15,7 +15,7 @@ export default function Reviews({ movieId, API_KEY }) {
   console.log(movieReviews);
   return (
     <ul>
-      {movieReviews &&
+      {movieReviews.length === 0 ?<p>отзывов не найдено</p> :
         movieReviews.map(author => {
           return (
             <li key={author.id}>

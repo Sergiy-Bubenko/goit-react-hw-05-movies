@@ -1,13 +1,19 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 export default function MoviesPage({ API_KEY }) {
   const [requestValue, setRequestValue] = useState('');
   const [requestMovies, setRequestMovies] = useState('');
   const [resultRequestMovies, setResultRequestMovies] = useState(null);
   const [stopRequest, setStopRequest] = useState(true);
-  console.log(resultRequestMovies);
+
+  const history = useHistory();
+  const location = useLocation();
+  console.log('history', history);
+  console.log('location', location);
+
+  // console.log(resultRequestMovies);
 
   useEffect(() => {
     if (stopRequest) {
@@ -21,7 +27,14 @@ export default function MoviesPage({ API_KEY }) {
       .then(response => response.json())
       .then(res => [...res.results])
       .then(setResultRequestMovies)
-      
+      .catch(error => console.log(error))
+      .finally(() =>
+        history.push({
+          ...location,
+          search: `query=${requestMovies}`,
+        }),
+      );
+
   }, [API_KEY, requestMovies]);
 
   const handleRequestChange = evt =>
@@ -33,8 +46,16 @@ export default function MoviesPage({ API_KEY }) {
     if (requestValue.trim() === '') {
       return toast.error('измените запрос');
     }
+
     setRequestMovies(requestValue);
   };
+
+  const onPushHistory = () =>
+    // history.push({
+    //       ...location,
+    //       search: `query=${requestMovies}`,
+    //     })
+    console.log('перешол по ссылке на фильм');
   return (
     <>
       <header className="Searchbar">
@@ -55,11 +76,15 @@ export default function MoviesPage({ API_KEY }) {
           </button>
         </form>
       </header>
+
+      {/* <Route path={`/movies?query=${requestMovies}`}> */}
+      {/* <Route path={`/movies?query=movie`}> */}
+
       <ul>
         {resultRequestMovies &&
           resultRequestMovies.map(movie => {
             return (
-              <li key={movie.id}>
+              <li onClick={onPushHistory} key={movie.id}>
                 <Link to={`/movies/${movie.id}`}>
                   {movie.name || movie.title}
                 </Link>
@@ -67,6 +92,11 @@ export default function MoviesPage({ API_KEY }) {
             );
           })}
       </ul>
+      {/* </Route> */}
     </>
   );
+}
+
+{
+  /* <Link to={`/movies?query=${requestMovies}` /> */
 }

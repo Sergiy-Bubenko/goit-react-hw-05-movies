@@ -1,5 +1,11 @@
-import { NavLink, Route, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import {
+  NavLink,
+  Route,
+  useParams,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';
 
 import Cast from '../Cast/Cast.js';
 import Reviews from '../Reviews/Reviews.js';
@@ -7,6 +13,11 @@ import Reviews from '../Reviews/Reviews.js';
 export default function MovieDetailsPage({ API_KEY }) {
   const { movieId } = useParams();
   const [thisMovie, setId] = useState(null);
+
+  const history = useHistory();
+  const location = useLocation();
+  console.log('history', history);
+  console.log('location', location);
 
   // console.log('thisMovie', thisMovie);
   useEffect(
@@ -19,10 +30,14 @@ export default function MovieDetailsPage({ API_KEY }) {
     [API_KEY, movieId],
   );
 
+  const onBackHistory = () => history.goBack('/movies?query=a');
+
+
+
   return (
     thisMovie && (
       <>
-        <button type="button">
+        <button onClick={onBackHistory} type="button">
           <img
             width="10px"
             src="https://img.icons8.com/ios-glyphs/30/000000/long-arrow-left.png"
