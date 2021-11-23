@@ -1,42 +1,72 @@
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
-import { useParams, Route } from 'react-router-dom';
-import MovieDetailsPage from '../MovieDetailsPage/MovieDetailsPage.js';
-import Cast from '../Cast/Cast.js';
-import Reviews from '../Reviews/Reviews.js';
-
+import { Link } from 'react-router-dom';
 export default function MoviesPage({ API_KEY }) {
-  const { movieId } = useParams();
+  const [requestValue, setRequestValue] = useState('');
+  const [requestMovies, setRequestMovies] = useState('');
+  const [resultRequestMovies, setResultRequestMovies] = useState(null);
+  const [stopRequest, setStopRequest] = useState(true);
+  console.log(resultRequestMovies);
 
-  const [thisMovie, setId] = useState(null);
-  console.log('thisMovie', thisMovie);
-  useEffect(
-    () =>
-      fetch(
-        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
-      )
-        .then(response => response.json())
-        .then(setId),
-    [API_KEY, movieId],
-  );
+  useEffect(() => {
+    if (stopRequest) {
+      return setStopRequest(false);
+    }
 
-  return (
-    thisMovie && (
-      <>
-        <MovieDetailsPage thisMovie={thisMovie} movieId={movieId} />
-
-        <Route path={`/movies/${movieId}/cast`}>
-          <Cast movieId={movieId} API_KEY={ API_KEY }/>
-        </Route>
-        <Route path={`/movies/${movieId}/reviews`}>
-          <Reviews movieId={movieId} API_KEY={ API_KEY } />
-        </Route>
-      </>
+    // eslint-disable-next-line no-unused-expressions
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&include_adult=false&query=${requestMovies}`,
     )
+      .then(response => response.json())
+      .then(res => [...res.results])
+      .then(setResultRequestMovies)
+      
+  }, [API_KEY, requestMovies]);
+
+  const handleRequestChange = evt =>
+    setRequestValue(evt.target.value.toLowerCase());
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    if (requestValue.trim() === '') {
+      return toast.error('измените запрос');
+    }
+    setRequestMovies(requestValue);
+  };
+  return (
+    <>
+      <header className="Searchbar">
+        <form onSubmit={handleSubmit} className="SearchForm">
+          <input
+            className="SearchForm-input"
+            type="text"
+            name="requestValue"
+            value={requestValue}
+            onChange={handleRequestChange}
+            autoComplete="off"
+            autoFocus
+            placeholder="Search movies"
+          />
+
+          <button type="submit" className="SearchForm-button">
+            <span className="SearchForm-button-label">Search</span>
+          </button>
+        </form>
+      </header>
+      <ul>
+        {resultRequestMovies &&
+          resultRequestMovies.map(movie => {
+            return (
+              <li key={movie.id}>
+                <Link to={`/movies/${movie.id}`}>
+                  {movie.name || movie.title}
+                </Link>
+              </li>
+            );
+          })}
+      </ul>
+    </>
   );
-  // return <div>MoviesPage{thisMovie}</div>;
-  // <img src={}></img>;
 }
-
-// thisMovie.homepage +
-
-// https://image.tmdb.org/t/p/w500

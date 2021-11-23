@@ -1,11 +1,7 @@
-import {
-  Link,
-  // useRouteMatch
-  useParams
-} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 export default function HomePage({ movies }) {
   // const { url } = useRouteMatch();
-  const a = useParams()
+  const a = useParams();
   console.log(a);
   return (
     <>
