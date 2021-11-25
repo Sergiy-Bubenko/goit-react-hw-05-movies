@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 export default function Cast({ movieId, API_KEY }) {
   const [movieCast, setCast] = useState(null);
+  
   useEffect(
     () =>
       fetch(
@@ -16,20 +17,25 @@ export default function Cast({ movieId, API_KEY }) {
 
   return (
     <ul>
-      {movieCast &&
+      {!movieCast ? (
+        <p>Информация об актерском составе не найдена.</p>
+      ) : (
         movieCast.map(actor => {
           return (
             <li key={actor.id}>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
-                width="180"
-                alt={actor.profile_path}
-              />
+              {actor.profile_path && (
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+                  width="180"
+                  alt={actor.profile_path}
+                />
+              )}
               <h3>{actor.original_name}</h3>
               <p>Character:{actor.character}</p>
             </li>
           );
-        })}
+        })
+      )}
     </ul>
   );
 }

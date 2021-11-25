@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 export default function Reviews({ movieId, API_KEY }) {
   const [movieReviews, setReviews] = useState(null);
+
   useEffect(
     () =>
       fetch(
@@ -13,9 +14,12 @@ export default function Reviews({ movieId, API_KEY }) {
     [API_KEY, movieId],
   );
   console.log(movieReviews);
+
   return (
     <ul>
-      {movieReviews.length === 0 ?<p>отзывов не найдено</p> :
+      {!movieReviews ? (
+        <p>Отзывы не найдены.</p>
+      ) : (
         movieReviews.map(author => {
           return (
             <li key={author.id}>
@@ -23,7 +27,8 @@ export default function Reviews({ movieId, API_KEY }) {
               <p>Character:{author.content}</p>
             </li>
           );
-        })}
+        })
+      )}
     </ul>
   );
 }

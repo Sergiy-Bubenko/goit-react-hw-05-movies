@@ -12,27 +12,28 @@ import Reviews from '../Reviews/Reviews.js';
 
 export default function MovieDetailsPage({ API_KEY }) {
   const { movieId } = useParams();
-  const [thisMovie, setId] = useState(null);
-
+  const [thisMovie, setMovie] = useState(null);
+  // console.log('movieId', movieId);
+  // console.log(`thisMovie`, thisMovie);
   const history = useHistory();
   const location = useLocation();
-  console.log('history', history);
-  console.log('location', location);
 
-  // console.log('thisMovie', thisMovie);
+  // console.log('history', history);
+  // console.log('location', location);
+
   useEffect(
     () =>
       fetch(
         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
       )
         .then(response => response.json())
-        .then(setId),
+        .then(setMovie),
     [API_KEY, movieId],
   );
 
-  const onBackHistory = () => history.goBack('/movies?query=a');
-
-
+  const onBackHistory = () => {
+    history.push(location?.state?.from ?? '/');
+  };
 
   return (
     thisMovie && (
@@ -46,13 +47,17 @@ export default function MovieDetailsPage({ API_KEY }) {
           Go back
         </button>
         <br />
-        <img
-          src={`https://image.tmdb.org/t/p/w500${thisMovie.poster_path}`}
-          width="320"
-          alt={thisMovie.title}
-        />
+        {thisMovie.poster_path && (
+          <img
+            src={`https://image.tmdb.org/t/p/w500${thisMovie.poster_path}`}
+            width="320"
+            alt={thisMovie.title}
+          />
+        )}
         <h2>{thisMovie.title}</h2>
-        <p>User Score:</p>
+        {thisMovie.vote_average !== 0 && (
+          <p>User Score: {thisMovie.vote_average}</p>
+        )}
         <h2>Overview</h2>
         <p>{thisMovie.overview}</p>
         <h2>Genres</h2>
@@ -66,7 +71,10 @@ export default function MovieDetailsPage({ API_KEY }) {
             <NavLink
               className="link"
               activeClassName="activeLink"
-              to={`/movies/${movieId}/cast`}
+              to={{
+                pathname: `/movies/${movieId}/cast`,
+                state: { from: location?.state?.from ?? null },
+              }}
             >
               Cast
             </NavLink>
@@ -75,7 +83,10 @@ export default function MovieDetailsPage({ API_KEY }) {
             <NavLink
               className="link"
               activeClassName="activeLink"
-              to={`/movies/${movieId}/reviews`}
+              to={{
+                pathname: `/movies/${movieId}/reviews`,
+                state: { from: location?.state?.from ?? null },
+              }}
             >
               Reviews
             </NavLink>

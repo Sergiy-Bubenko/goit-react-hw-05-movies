@@ -1,8 +1,6 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 export default function HomePage({ movies }) {
-  // const { url } = useRouteMatch();
-  const a = useParams();
-  console.log(a);
+  const location = useLocation();
   return (
     <>
       <h1>Trending to day</h1>
@@ -11,7 +9,11 @@ export default function HomePage({ movies }) {
           return (
             <li key={movie.id}>
               <Link
-                to={`/movies/${movie.id}`}
+                to={{
+                  pathname: `/movies/${movie.id}`,
+                  // state: { from: location?.state?.from ?? null },
+                  state: { from: location ?? null },
+                }}
                 // {movie.id}
               >
                 {movie.name || movie.title}
