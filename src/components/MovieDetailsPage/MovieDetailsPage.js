@@ -18,8 +18,8 @@ export default function MovieDetailsPage({ API_KEY }) {
   const history = useHistory();
   const location = useLocation();
 
-  // console.log('history', history);
-  // console.log('location', location);
+  console.log('history', history);
+  console.log('location', location);
 
   useEffect(
     () =>
@@ -54,16 +54,22 @@ export default function MovieDetailsPage({ API_KEY }) {
             alt={thisMovie.title}
           />
         )}
-        <h2>{thisMovie.title}</h2>
-        {thisMovie.vote_average !== 0 && (
-          <p>User Score: {thisMovie.vote_average}</p>
+        <h2>{thisMovie.title && thisMovie.title}</h2>
+        {thisMovie.vote_average && <p>User Score: {thisMovie.vote_average}</p>}
+        {thisMovie.overview && (
+          <>
+            <h2>Overview</h2>
+            <p>{thisMovie.overview}</p>
+          </>
         )}
-        <h2>Overview</h2>
-        <p>{thisMovie.overview}</p>
-        <h2>Genres</h2>
-        {thisMovie.genres.map(genre => {
-          return <span key={genre.id}>{genre.name}</span>;
-        })}
+        {thisMovie.genres && (
+          <>
+            <h2>Genres</h2>
+            {thisMovie.genres.map(genre => {
+              return <span key={genre.id}>{genre.name}</span>;
+            })}
+          </>
+        )}
         <hr />
         <h3>Additional information</h3>
         <ul>

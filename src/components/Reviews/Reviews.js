@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function Reviews({ movieId, API_KEY }) {
-  const [movieReviews, setReviews] = useState(null);
+  const [movieReviews, setReviews] = useState([]);
 
   useEffect(
     () =>
@@ -10,25 +10,29 @@ export default function Reviews({ movieId, API_KEY }) {
       )
         .then(response => response.json())
         .then(res => res.results)
-        .then(setReviews),
+        .then(setReviews)
+        .catch(err => console.error(err)),
     [API_KEY, movieId],
   );
   console.log(movieReviews);
 
   return (
-    <ul>
-      {!movieReviews ? (
+    <div>
+      {movieReviews.length === 0 ? (
         <p>Отзывы не найдены.</p>
       ) : (
-        movieReviews.map(author => {
-          return (
-            <li key={author.id}>
-              <h3>{author.author}</h3>
-              <p>Character:{author.content}</p>
-            </li>
-          );
-        })
+        <ul>
+          {movieReviews.map(authorReviews => {
+            const { id, author, content } = authorReviews;
+            return (
+              <li key={id}>
+                <h3>{author}</h3>
+                <p>Character:{content}</p>
+              </li>
+            );
+          })}
+        </ul>
       )}
-    </ul>
+    </div>
   );
 }

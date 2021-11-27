@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 export default function Cast({ movieId, API_KEY }) {
-  const [movieCast, setCast] = useState(null);
-  
+  const [movieCast, setCast] = useState([]);
+
   useEffect(
     () =>
       fetch(
@@ -10,32 +10,35 @@ export default function Cast({ movieId, API_KEY }) {
       )
         .then(response => response.json())
         .then(res => res.cast)
-        .then(setCast),
+        .then(setCast)
+        .catch(err => console.error(err)),
     [API_KEY, movieId],
   );
-  console.log(movieCast);
 
   return (
-    <ul>
-      {!movieCast ? (
+    <div>
+      {movieCast.length === 0 ? (
         <p>Информация об актерском составе не найдена.</p>
       ) : (
-        movieCast.map(actor => {
-          return (
-            <li key={actor.id}>
-              {actor.profile_path && (
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
-                  width="180"
-                  alt={actor.profile_path}
-                />
-              )}
-              <h3>{actor.original_name}</h3>
-              <p>Character:{actor.character}</p>
-            </li>
-          );
-        })
+        <ul>
+          {movieCast.map(actor => {
+            const { id, profile_path, original_name, character } = actor;
+            return (
+              <li key={id}>
+                {profile_path && (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${profile_path}`}
+                    width="180"
+                    alt={profile_path}
+                  />
+                )}
+                <h3>{original_name && original_name}</h3>
+                <p>Character:{character && character}</p>
+              </li>
+            );
+          })}
+        </ul>
       )}
-    </ul>
+    </div>
   );
 }

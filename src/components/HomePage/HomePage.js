@@ -11,8 +11,8 @@ export default function HomePage({ movies }) {
               <Link
                 to={{
                   pathname: `/movies/${movie.id}`,
-                  // state: { from: location?.state?.from ?? null },
-                  state: { from: location ?? null },
+                  state: { from: location?.state?.from ?? null },
+                  // state: { from: location ?? null },
                 }}
                 // {movie.id}
               >

@@ -12,11 +12,13 @@ const API_KEY = '1eb23ac83dec10d429defb0a8ad87385';
 function App() {
   const [movies, setMovies] = useState([]);
 
-
   useEffect(
     () =>
       fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}`)
         .then(response => response.json())
+        .then(r => {
+          console.log(r)
+        return r})
         .then(res => setMovies(res.results))
         .catch(error => console.error(error)),
     [],
@@ -46,9 +48,7 @@ function App() {
         </Route>
 
         <Route path="/movies/:movieId">
-          <MovieDetailsPage
-            API_KEY={API_KEY}
-          />
+          <MovieDetailsPage API_KEY={API_KEY} />
         </Route>
         <Route>
           <AddressNotFound />

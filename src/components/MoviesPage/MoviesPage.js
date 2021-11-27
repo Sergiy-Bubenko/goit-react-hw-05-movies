@@ -1,21 +1,19 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
-import { Route, Link, useHistory, useLocation } from 'react-router-dom';
-export default function MoviesPage({ API_KEY}) {
+import { Link, useHistory, useLocation } from 'react-router-dom';
+export default function MoviesPage({ API_KEY }) {
   const [requestValue, setRequestValue] = useState('');
   const [requestMovies, setRequestMovies] = useState('');
   const [resultRequestMovies, setResultRequestMovies] = useState(null);
   const [stopRequest, setStopRequest] = useState(true);
+  const [stopRequestBack, setStopRequestBack] = useState(true);
 
   const history = useHistory();
   const location = useLocation();
 
-  // const URLSearchParamsGetAll = new URLSearchParams(document.location.state.substring(1));
-  // console.log(`URLSearchParamsGetAll`, URLSearchParamsGetAll.get('from'));
-
-  // console.log('history', history);
-  // console.log('location', location);
+  console.log('MoviesPageHistory', history);
+  console.log('MoviesPageLocation', location);
 
   useEffect(() => {
     if (stopRequest) {
@@ -26,18 +24,20 @@ export default function MoviesPage({ API_KEY}) {
       `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&include_adult=false&query=${requestMovies}`,
     )
       .then(response => response.json())
-      .then(res => [...res.results])
+      // .then(res => [...res.results])
+      .then(res => res.results)
       .then(setResultRequestMovies)
       .catch(error => console.error(error));
-    // .finally(() =>
-    //   history.push({
-    //     ...location,
-    //     search: `query=${requestMovies}`,
-    //     // search: `query=movie`,
-    //   }),
-    // );
+
     setRequestValue('');
   }, [requestMovies]);
+
+  useEffect(() => {
+    if (stopRequest) {
+      return setStopRequestBack(false);
+    }
+    setRequestMovies(location.request);
+  }, []);
 
   const handleRequestChange = evt =>
     setRequestValue(evt.target.value.toLowerCase());
@@ -48,7 +48,7 @@ export default function MoviesPage({ API_KEY}) {
     if (requestValue.trim() === '') {
       return toast.error('измените запрос');
     }
-    
+
     setRequestMovies(requestValue);
   };
 
@@ -56,7 +56,6 @@ export default function MoviesPage({ API_KEY}) {
     history.push({
       ...location,
       search: `query=${requestValue}`,
-      // search: `query=movie`,
     });
 
   return (
@@ -84,15 +83,17 @@ export default function MoviesPage({ API_KEY}) {
         </form>
       </header>
 
-      <ul>
-        {resultRequestMovies &&
-          resultRequestMovies.map(movie => {
+      {resultRequestMovies && (
+        <ul>
+          {resultRequestMovies.map(movie => {
             return (
               <li key={movie.id}>
                 <Link
                   to={{
                     pathname: `/movies/${movie.id}`,
-                    state: { from: location ?? null },
+                    state: {
+                      from: { ...location, request: requestMovies } ?? null,
+                    },
                   }}
                 >
                   {movie.name || movie.title}
@@ -100,7 +101,8 @@ export default function MoviesPage({ API_KEY}) {
               </li>
             );
           })}
-      </ul>
+        </ul>
+      )}
     </>
   );
 }
