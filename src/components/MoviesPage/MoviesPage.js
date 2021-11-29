@@ -7,13 +7,9 @@ export default function MoviesPage({ API_KEY }) {
   const [requestMovies, setRequestMovies] = useState('');
   const [resultRequestMovies, setResultRequestMovies] = useState(null);
   const [stopRequest, setStopRequest] = useState(true);
-  const [stopRequestBack, setStopRequestBack] = useState(true);
 
   const history = useHistory();
   const location = useLocation();
-
-  console.log('MoviesPageHistory', history);
-  console.log('MoviesPageLocation', location);
 
   useEffect(() => {
     if (stopRequest) {
@@ -24,7 +20,6 @@ export default function MoviesPage({ API_KEY }) {
       `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&include_adult=false&query=${requestMovies}`,
     )
       .then(response => response.json())
-      // .then(res => [...res.results])
       .then(res => res.results)
       .then(setResultRequestMovies)
       .catch(error => console.error(error));
@@ -33,9 +28,7 @@ export default function MoviesPage({ API_KEY }) {
   }, [requestMovies]);
 
   useEffect(() => {
-    if (stopRequest) {
-      return setStopRequestBack(false);
-    }
+    if (!location.request) return;
     setRequestMovies(location.request);
   }, []);
 

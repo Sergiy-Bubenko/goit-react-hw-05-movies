@@ -1,3 +1,16 @@
+h1,
+h2,
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   /* text-align: center; */
   padding: 0 15px 0 15px;
@@ -15,4 +28,10 @@
 .activeLink {
   composes: link;
   color: rgb(236, 8, 8);
+}
+
+.App__nav {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 3px 5px red;
+  margin-bottom: 25px;
 }

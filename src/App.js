@@ -1,12 +1,17 @@
-import React from 'react';
+import './App.css';
+import { lazy, Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
-import HomePage from './components/HomePage/HomePage';
-import MoviesPage from './components/MoviesPage/MoviesPage';
-import AddressNotFound from './components/AddressNotFound/AddressNotFound';
-import MovieDetailsPage from './components/MovieDetailsPage/MovieDetailsPage';
 
-import './App.css';
+const HomePage = lazy(() => import('./components/HomePage/HomePage'));
+const MoviesPage = lazy(() => import('./components/MoviesPage/MoviesPage'));
+const MovieDetailsPage = lazy(() =>
+  import('./components/MovieDetailsPage/MovieDetailsPage'),
+);
+const AddressNotFound = lazy(() =>
+  import('./components/AddressNotFound/AddressNotFound'),
+);
+
 const API_KEY = '1eb23ac83dec10d429defb0a8ad87385';
 
 function App() {
@@ -16,17 +21,14 @@ function App() {
     () =>
       fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}`)
         .then(response => response.json())
-        .then(r => {
-          console.log(r)
-        return r})
         .then(res => setMovies(res.results))
-        .catch(error => console.error(error)),
+        .catch(err => console.error(err)),
     [],
   );
 
   return (
     <div className="App">
-      <nav>
+      <nav className='App__nav'>
         <NavLink className="link" activeClassName="activeLink" to="/" exact>
           Home
         </NavLink>
@@ -34,26 +36,25 @@ function App() {
           Movies
         </NavLink>
       </nav>
+      
+      <Suspense fallback={<h1>Загрузжается результат...</h1>}>
+        <Switch>
+          <Route exact path="/">
+            <HomePage movies={movies} />
+          </Route>
 
-      <hr />
+          <Route exact path="/movies">
+            <MoviesPage API_KEY={API_KEY} />
+          </Route>
 
-      <Switch>
-        <Route exact path="/">
-          <HomePage movies={movies} />
-        </Route>
-
-        <Route exact path="/movies">
-          {/* тут сделаем инпут для поиска фильма */}
-          <MoviesPage API_KEY={API_KEY} />
-        </Route>
-
-        <Route path="/movies/:movieId">
-          <MovieDetailsPage API_KEY={API_KEY} />
-        </Route>
-        <Route>
-          <AddressNotFound />
-        </Route>
-      </Switch>
+          <Route path="/movies/:movieId">
+            <MovieDetailsPage API_KEY={API_KEY} />
+          </Route>
+          <Route>
+            <AddressNotFound />
+          </Route>
+        </Switch>
+      </Suspense>
     </div>
   );
 }

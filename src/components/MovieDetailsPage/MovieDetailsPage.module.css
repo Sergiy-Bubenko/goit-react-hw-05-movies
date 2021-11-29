@@ -1,0 +1,35 @@
+.btn {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 15px;
+
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #d7c146;
+  color: #fff;
+  padding: 8px 24px;
+  font-size: 16px;
+}
+
+.btnText {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.btn:hover {
+  background: #d7c146a8;
+}
+
+.arrow {
+  border-radius: 50px;
+}
+
+.MovieDetailsPageContainer {
+  display: flex;
+}
+
+.MovieInfo {
+  padding-left: 15px;
+}

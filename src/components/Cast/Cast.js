@@ -9,7 +9,10 @@ export default function Cast({ movieId, API_KEY }) {
         `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`,
       )
         .then(response => response.json())
-        .then(res => res.cast)
+        .then(res => {
+          console.log(res.cast);
+          return res.cast;
+        })
         .then(setCast)
         .catch(err => console.error(err)),
     [API_KEY, movieId],

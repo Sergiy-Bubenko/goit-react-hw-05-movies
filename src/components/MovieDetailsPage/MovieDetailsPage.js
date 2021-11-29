@@ -1,25 +1,22 @@
-import { useEffect, useState } from 'react';
+import s from './MovieDetailsPage.module.css';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import {
   NavLink,
+  Switch,
   Route,
   useParams,
   useHistory,
   useLocation,
 } from 'react-router-dom';
 
-import Cast from '../Cast/Cast.js';
-import Reviews from '../Reviews/Reviews.js';
+const Cast = lazy(() => import('../Cast/Cast'));
+const Reviews = lazy(() => import('../Reviews/Reviews'));
 
 export default function MovieDetailsPage({ API_KEY }) {
   const { movieId } = useParams();
   const [thisMovie, setMovie] = useState(null);
-  // console.log('movieId', movieId);
-  // console.log(`thisMovie`, thisMovie);
   const history = useHistory();
   const location = useLocation();
-
-  console.log('history', history);
-  console.log('location', location);
 
   useEffect(
     () =>
@@ -38,39 +35,47 @@ export default function MovieDetailsPage({ API_KEY }) {
   return (
     thisMovie && (
       <>
-        <button onClick={onBackHistory} type="button">
+        <button onClick={onBackHistory} type="button" className={s.btn}>
           <img
-            width="10px"
-            src="https://img.icons8.com/ios-glyphs/30/000000/long-arrow-left.png"
-            alt=""
-          />{' '}
-          Go back
+            className={s.arrow}
+            width="18px"
+            src="https://static7.depositphotos.com/1000335/700/i/600/depositphotos_7008775-stock-photo-arrow-left-icon-grey.jpg"
+            alt="стрелка назад"
+          />
+          <span className={s.btnText}>Go back</span>
         </button>
         <br />
-        {thisMovie.poster_path && (
-          <img
-            src={`https://image.tmdb.org/t/p/w500${thisMovie.poster_path}`}
-            width="320"
-            alt={thisMovie.title}
-          />
-        )}
-        <h2>{thisMovie.title && thisMovie.title}</h2>
-        {thisMovie.vote_average && <p>User Score: {thisMovie.vote_average}</p>}
-        {thisMovie.overview && (
-          <>
-            <h2>Overview</h2>
-            <p>{thisMovie.overview}</p>
-          </>
-        )}
-        {thisMovie.genres && (
-          <>
-            <h2>Genres</h2>
-            {thisMovie.genres.map(genre => {
-              return <span key={genre.id}>{genre.name}</span>;
-            })}
-          </>
-        )}
-        <hr />
+        <div className={s.MovieDetailsPageContainer}>
+          <div>
+            {thisMovie.poster_path && (
+              <img
+                src={`https://image.tmdb.org/t/p/w500${thisMovie.poster_path}`}
+                width="320"
+                alt={thisMovie.title}
+              />
+            )}
+          </div>
+          <div className={s.MovieInfo}>
+            <h2>{thisMovie.title && thisMovie.title}</h2>
+            {thisMovie.vote_average && (
+              <p>User Score:{" "}{thisMovie.vote_average}</p>
+            )}
+            {thisMovie.overview && (
+              <>
+                <h2>Overview</h2>
+                <p>{thisMovie.overview}</p>
+              </>
+            )}
+            {thisMovie.genres && (
+              <>
+                <h2>Genres</h2>
+                {thisMovie.genres.map(genre => {
+                  return <span key={genre.id}>{genre.name}</span>;
+                })}
+              </>
+            )}
+          </div>
+        </div>
         <h3>Additional information</h3>
         <ul>
           <li>
@@ -98,13 +103,17 @@ export default function MovieDetailsPage({ API_KEY }) {
             </NavLink>
           </li>
         </ul>
-        <hr />
-        <Route path={`/movies/${movieId}/cast`}>
-          <Cast movieId={movieId} API_KEY={API_KEY} />
-        </Route>
-        <Route path={`/movies/${movieId}/reviews`}>
-          <Reviews movieId={movieId} API_KEY={API_KEY} />
-        </Route>
+
+        <Suspense fallback={<h1>Загрузка...</h1>}>
+          <Switch>
+            <Route path={`/movies/${movieId}/cast`}>
+              <Cast movieId={movieId} API_KEY={API_KEY} />
+            </Route>
+            <Route path={`/movies/${movieId}/reviews`}>
+              <Reviews movieId={movieId} API_KEY={API_KEY} />
+            </Route>
+          </Switch>
+        </Suspense>
       </>
     )
   );

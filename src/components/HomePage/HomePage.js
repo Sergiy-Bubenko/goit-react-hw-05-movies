@@ -3,7 +3,7 @@ export default function HomePage({ movies }) {
   const location = useLocation();
   return (
     <>
-      <h1>Trending to day</h1>
+      <h1>TRENDING TO DAY</h1>
       <ul>
         {movies.map(movie => {
           return (
@@ -12,9 +12,7 @@ export default function HomePage({ movies }) {
                 to={{
                   pathname: `/movies/${movie.id}`,
                   state: { from: location?.state?.from ?? null },
-                  // state: { from: location ?? null },
                 }}
-                // {movie.id}
               >
                 {movie.name || movie.title}
               </Link>

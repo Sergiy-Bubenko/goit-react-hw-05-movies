@@ -14,7 +14,6 @@ export default function Reviews({ movieId, API_KEY }) {
         .catch(err => console.error(err)),
     [API_KEY, movieId],
   );
-  console.log(movieReviews);
 
   return (
     <div>
