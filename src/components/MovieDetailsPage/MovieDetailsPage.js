@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import s from './MovieDetailsPage.module.css';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import {
@@ -58,7 +59,7 @@ export default function MovieDetailsPage({ API_KEY }) {
           <div className={s.MovieInfo}>
             <h2>{thisMovie.title && thisMovie.title}</h2>
             {thisMovie.vote_average && (
-              <p>User Score:{" "}{thisMovie.vote_average}</p>
+              <p>User Score: {thisMovie.vote_average}</p>
             )}
             {thisMovie.overview && (
               <>
@@ -118,3 +119,7 @@ export default function MovieDetailsPage({ API_KEY }) {
     )
   );
 }
+
+MovieDetailsPage.propTypes = {
+  API_KEY: PropTypes.string,
+};

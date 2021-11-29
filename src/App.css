@@ -16,22 +16,39 @@ ul {
   padding: 0 15px 0 15px;
 }
 
+.App__nav {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 3px 5px red;
+  padding: 5px;
+  margin-bottom: 25px;
+  max-width: 200px;
+}
+
 .link {
   display: inline-block;
   text-decoration: none;
   padding: 10px;
+  margin-left: 10px;
   font-weight: 500;
   font-size: 20px;
   color: #000;
 }
 
-.activeLink {
-  composes: link;
-  color: rgb(236, 8, 8);
+/* .link:not(:last-child) {
+  margin-right: 10px;
+} */
+
+.link:focus,
+.link:hover {
+  background-color: yellow;
+  border-radius: 10px;
+  outline: 2px solid rgb(204, 229, 153);
 }
 
-.App__nav {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-  box-shadow: 5px 3px 5px red;
-  margin-bottom: 25px;
+.activeLink {
+  composes: link;
+  background-color: yellow;
+  border-radius: 10px;
+  outline: 2px solid rgb(204, 229, 153);
+  color: rgb(236, 8, 8);
 }

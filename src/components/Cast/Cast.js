@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-
 export default function Cast({ movieId, API_KEY }) {
   const [movieCast, setCast] = useState([]);
 
@@ -45,3 +45,8 @@ export default function Cast({ movieId, API_KEY }) {
     </div>
   );
 }
+
+Cast.propTypes = {
+  API_KEY: PropTypes.string,
+  movieId: PropTypes.string,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 export default function Reviews({ movieId, API_KEY }) {
@@ -35,3 +36,8 @@ export default function Reviews({ movieId, API_KEY }) {
     </div>
   );
 }
+
+Reviews.propTypes = {
+  API_KEY: PropTypes.string,
+  movieId: PropTypes.string,
+};

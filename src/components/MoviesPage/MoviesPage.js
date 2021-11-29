@@ -1,7 +1,12 @@
-import { toast } from 'react-toastify';
+import s from './MoviesPage.module.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { lazy, Suspense } from 'react';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+// import MoveList from '../MoveList/MoveList';
+const MoveList = lazy(() => import('../MoveList/MoveList'));
 export default function MoviesPage({ API_KEY }) {
   const [requestValue, setRequestValue] = useState('');
   const [requestMovies, setRequestMovies] = useState('');
@@ -53,10 +58,10 @@ export default function MoviesPage({ API_KEY }) {
 
   return (
     <>
-      <header className="Searchbar">
-        <form onSubmit={handleSubmit} className="SearchForm">
+      <header className={s.Searchbar}>
+        <form onSubmit={handleSubmit} className={s.SearchForm}>
           <input
-            className="SearchForm-input"
+            className={s.SearchFormInput}
             type="text"
             name="requestValue"
             value={requestValue}
@@ -65,37 +70,26 @@ export default function MoviesPage({ API_KEY }) {
             autoFocus
             placeholder="Search movies"
           />
-
           <button
             onClick={onPushHistory}
             type="submit"
-            className="SearchForm-button"
+            className={s.SearchFormButton}
           >
-            <span className="SearchForm-button-label">Search</span>
+            <span className={s.SearchFormButtonLabel}>Search</span>
           </button>
         </form>
       </header>
-
-      {resultRequestMovies && (
-        <ul>
-          {resultRequestMovies.map(movie => {
-            return (
-              <li key={movie.id}>
-                <Link
-                  to={{
-                    pathname: `/movies/${movie.id}`,
-                    state: {
-                      from: { ...location, request: requestMovies } ?? null,
-                    },
-                  }}
-                >
-                  {movie.name || movie.title}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <Suspense fallback={<h1>Загрузжается результат...</h1>}>
+        <MoveList
+          movies={resultRequestMovies}
+          location={location}
+          requestMovies={requestMovies}
+        />
+      </Suspense>
     </>
   );
 }
+
+MoviesPage.propTypes = {
+  API_KEY: PropTypes.string,
+};

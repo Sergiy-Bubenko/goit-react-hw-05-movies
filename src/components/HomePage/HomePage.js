@@ -1,25 +1,27 @@
-import { Link, useLocation } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import PropTypes from 'prop-types';
+import s from './HomePage.module.css';
+import { useLocation } from 'react-router-dom';
+// import MoveList from '../MoveList/MoveList';
+const MoveList = lazy(() => import('../MoveList/MoveList'));
 export default function HomePage({ movies }) {
   const location = useLocation();
   return (
     <>
-      <h1>TRENDING TO DAY</h1>
-      <ul>
-        {movies.map(movie => {
-          return (
-            <li key={movie.id}>
-              <Link
-                to={{
-                  pathname: `/movies/${movie.id}`,
-                  state: { from: location?.state?.from ?? null },
-                }}
-              >
-                {movie.name || movie.title}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <h1 className={s.homeTytle}>TRENDING TO DAY</h1>
+      <Suspense fallback={<h1>Загрузжается результат...</h1>}>
+        <MoveList movies={movies} location={location} />
+      </Suspense>
     </>
   );
 }
+
+HomePage.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      title: PropTypes.string,
+    }),
+  ),
+};

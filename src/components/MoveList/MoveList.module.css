@@ -1,0 +1,18 @@
+.homeListContainer {
+  padding-left: 15px;
+}
+
+.homeItem:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.homeItem a {
+  padding: 3px 8px;
+}
+
+.homeItem a:hover,
+.homeItem a:focus {
+  border-radius: 4px;
+  color: rgb(218, 126, 83);
+  outline: 1px solid green;
+}
