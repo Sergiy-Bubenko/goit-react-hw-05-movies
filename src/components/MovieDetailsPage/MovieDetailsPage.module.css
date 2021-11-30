@@ -35,11 +35,11 @@
   padding: 15px 20px;
 }
 
-.Moviedetails__genre {
+.MovieDetails__genre {
   margin-bottom: 15px;
 }
 
-.Moviedetails__genreItem:not(:last-child) {
+.MovieDetails__genreItem:not(:last-child) {
   margin-right: 15px;
 }
 

@@ -40,12 +40,12 @@ export default function MoviesPage({ API_KEY }) {
   const handleRequestChange = evt =>
     setRequestValue(evt.target.value.toLowerCase());
 
-    const handleSubmit = event => {
-      event.preventDefault();
-      
+  const handleSubmit = event => {
+    event.preventDefault();
+
     setRequestMovies(requestValue);
   };
-  
+
   const onPushHistory = () => {
     if (requestValue.trim() === '') {
       return toast.error('Измените запрос');

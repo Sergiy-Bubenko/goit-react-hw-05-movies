@@ -41,7 +41,7 @@ export default function MovieDetailsPage({ API_KEY }) {
             className={s.arrow}
             width="18px"
             src="https://static7.depositphotos.com/1000335/700/i/600/depositphotos_7008775-stock-photo-arrow-left-icon-grey.jpg"
-            alt="стрелка назад"
+            alt="Go back"
           />
           <span className={s.btnText}>Go back</span>
         </button>
@@ -70,10 +70,10 @@ export default function MovieDetailsPage({ API_KEY }) {
             )}
             {thisMovie.genres && (
               <>
-                <h2 className={s.Moviedetails__genre}>Genres</h2>
+                <h2 className={s.MovieDetails__genre}>Genres</h2>
                 {thisMovie.genres.map(genre => {
                   return (
-                    <span className={s.Moviedetails__genreItem} key={genre.id}>
+                    <span className={s.MovieDetails__genreItem} key={genre.id}>
                       {genre.name}
                     </span>
                   );

@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import s from './MoveList.module.css';
-import {
-  Link,
-  // useLocation
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export default function MoveList({ movies, location, requestMovies }) {
   return (
     <div className={s.homeListContainer}>
