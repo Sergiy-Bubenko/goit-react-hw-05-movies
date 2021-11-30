@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import s from './Cast.module.css'
 export default function Cast({ movieId, API_KEY }) {
   const [movieCast, setCast] = useState([]);
 
@@ -27,7 +28,7 @@ export default function Cast({ movieId, API_KEY }) {
           {movieCast.map(actor => {
             const { id, profile_path, original_name, character } = actor;
             return (
-              <li key={id}>
+              <li className={s.castPerson} key={id}>
                 {profile_path && (
                   <img
                     src={`https://image.tmdb.org/t/p/w500${profile_path}`}
@@ -36,7 +37,7 @@ export default function Cast({ movieId, API_KEY }) {
                   />
                 )}
                 <h3>{original_name && original_name}</h3>
-                <p>Character:{character && character}</p>
+                <p>Character: {character && character}</p>
               </li>
             );
           })}

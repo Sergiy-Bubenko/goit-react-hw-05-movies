@@ -52,6 +52,7 @@ export default function MovieDetailsPage({ API_KEY }) {
               <img
                 src={`https://image.tmdb.org/t/p/w500${thisMovie.poster_path}`}
                 width="320"
+                style={{ display: 'block' }}
                 alt={thisMovie.title}
               />
             )}
@@ -69,41 +70,47 @@ export default function MovieDetailsPage({ API_KEY }) {
             )}
             {thisMovie.genres && (
               <>
-                <h2>Genres</h2>
+                <h2 className={s.Moviedetails__genre}>Genres</h2>
                 {thisMovie.genres.map(genre => {
-                  return <span key={genre.id}>{genre.name}</span>;
+                  return (
+                    <span className={s.Moviedetails__genreItem} key={genre.id}>
+                      {genre.name}
+                    </span>
+                  );
                 })}
               </>
             )}
           </div>
         </div>
-        <h3>Additional information</h3>
-        <ul>
-          <li>
-            <NavLink
-              className="link"
-              activeClassName="activeLink"
-              to={{
-                pathname: `/movies/${movieId}/cast`,
-                state: { from: location?.state?.from ?? null },
-              }}
-            >
-              Cast
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="link"
-              activeClassName="activeLink"
-              to={{
-                pathname: `/movies/${movieId}/reviews`,
-                state: { from: location?.state?.from ?? null },
-              }}
-            >
-              Reviews
-            </NavLink>
-          </li>
-        </ul>
+        <div className={s.AdditionalInformation}>
+          <h3>Additional information</h3>
+          <ul>
+            <li>
+              <NavLink
+                className="link"
+                activeClassName="activeLink"
+                to={{
+                  pathname: `/movies/${movieId}/cast`,
+                  state: { from: location?.state?.from ?? null },
+                }}
+              >
+                Cast
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className="link"
+                activeClassName="activeLink"
+                to={{
+                  pathname: `/movies/${movieId}/reviews`,
+                  state: { from: location?.state?.from ?? null },
+                }}
+              >
+                Reviews
+              </NavLink>
+            </li>
+          </ul>
+        </div>
 
         <Suspense fallback={<h1>Загрузка...</h1>}>
           <Switch>

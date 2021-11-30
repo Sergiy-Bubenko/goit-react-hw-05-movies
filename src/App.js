@@ -1,4 +1,6 @@
 import './App.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { lazy, Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
@@ -28,7 +30,7 @@ function App() {
 
   return (
     <div className="App">
-      <nav className='App__nav'>
+      <nav className="App__nav">
         <NavLink className="link" activeClassName="activeLink" to="/" exact>
           Home
         </NavLink>
@@ -36,7 +38,7 @@ function App() {
           Movies
         </NavLink>
       </nav>
-      
+
       <Suspense fallback={<h1>Загрузжается результат...</h1>}>
         <Switch>
           <Route exact path="/">
@@ -55,6 +57,7 @@ function App() {
           </Route>
         </Switch>
       </Suspense>
+      <ToastContainer />
     </div>
   );
 }

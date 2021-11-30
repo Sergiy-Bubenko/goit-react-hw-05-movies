@@ -1,11 +1,11 @@
 import s from './MoviesPage.module.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
-import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-// import MoveList from '../MoveList/MoveList';
+
 const MoveList = lazy(() => import('../MoveList/MoveList'));
 export default function MoviesPage({ API_KEY }) {
   const [requestValue, setRequestValue] = useState('');
@@ -40,21 +40,21 @@ export default function MoviesPage({ API_KEY }) {
   const handleRequestChange = evt =>
     setRequestValue(evt.target.value.toLowerCase());
 
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    if (requestValue.trim() === '') {
-      return toast.error('измените запрос');
-    }
-
+    const handleSubmit = event => {
+      event.preventDefault();
+      
     setRequestMovies(requestValue);
   };
-
-  const onPushHistory = () =>
-    history.push({
+  
+  const onPushHistory = () => {
+    if (requestValue.trim() === '') {
+      return toast.error('Измените запрос');
+    }
+    return history.push({
       ...location,
       search: `query=${requestValue}`,
     });
+  };
 
   return (
     <>

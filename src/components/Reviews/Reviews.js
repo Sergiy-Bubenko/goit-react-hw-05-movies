@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-
+import s from './Reviews.module.css';
 export default function Reviews({ movieId, API_KEY }) {
   const [movieReviews, setReviews] = useState([]);
 
@@ -25,9 +25,9 @@ export default function Reviews({ movieId, API_KEY }) {
           {movieReviews.map(authorReviews => {
             const { id, author, content } = authorReviews;
             return (
-              <li key={id}>
+              <li className={s.reviewsDetails} key={id}>
                 <h3>{author}</h3>
-                <p>Character:{content}</p>
+                <p>Character: {content}</p>
               </li>
             );
           })}

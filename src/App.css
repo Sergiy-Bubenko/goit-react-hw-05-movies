@@ -13,22 +13,23 @@ ul {
 
 .App {
   /* text-align: center; */
-  padding: 0 15px 0 15px;
+  padding: 15px;
 }
 
 .App__nav {
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
   box-shadow: 5px 3px 5px red;
-  padding: 5px;
+  padding: 10px;
   margin-bottom: 25px;
-  max-width: 200px;
+  margin-left: 15px;
+  max-width: 300px;
 }
 
 .link {
   display: inline-block;
   text-decoration: none;
-  padding: 10px;
-  margin-left: 10px;
+  padding: 10px 15px;
+  margin-left: 30px;
   font-weight: 500;
   font-size: 20px;
   color: #000;
@@ -43,6 +44,7 @@ ul {
   background-color: yellow;
   border-radius: 10px;
   outline: 2px solid rgb(204, 229, 153);
+  box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
 }
 
 .activeLink {
@@ -51,4 +53,5 @@ ul {
   border-radius: 10px;
   outline: 2px solid rgb(204, 229, 153);
   color: rgb(236, 8, 8);
+  box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
 }
